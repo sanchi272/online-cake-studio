@@ -1,0 +1,215 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff8f5;
+    color: #333;
+}
+
+header {
+    background-color: #8b3a62;
+    color: white;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    text-align: center;
+}
+
+main section:first-child {
+    padding: 80px 20px;
+    background-color: #ffe4ec;
+}
+
+main section:first-child h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+main section:first-child p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+main section:first-child a {
+    background-color: #8b3a62;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+main section:nth-child(2) {
+    padding: 50px 20px;
+}
+
+main section:nth-child(2) div {
+    display: inline-block;
+    width: 250px;
+    margin: 15px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #8b3a62;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+main section:nth-child(2) div {
+    display: inline-block;
+    width: 250px;
+    margin: 15px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    vertical-align: top;
+}
+
+main section:nth-child(2) div {
+    display: inline-block;
+    width: 250px;
+    margin: 15px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    vertical-align: top;
+}
+.cake-details {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    text-align: left;
+}
+
+.cake-image {
+    width: 45%;
+}
+
+.cake-image img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.cake-info {
+    width: 55%;
+}
+
+.cake-info h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.cake-description {
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.cake-price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.cake-availability {
+    font-weight: bold;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #8b3a62;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.cakes-page {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.cakes-page .cake-card {
+    display: inline-block;
+    vertical-align: top;
+    width: 250px;
+  min-height: 430px;
+    margin: 15px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cakes-page .cake-card img {
+    max-width: 250px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.cakes-page .cake-card h3 {
+    margin-top: 15px;
+}
+
+.cakes-page .cake-card p {
+    line-height: 1.5;
+}
+
+.cakes-page .cake-card a {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #8b3a62;
+    color: white;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.category-filter {
+    margin: 25px 0;
+}
+
+.category-filter a {
+    display: inline-block;
+    margin: 5px 8px;
+    padding: 10px 18px;
+    background-color: #8b3a62;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.category-filter a:hover {
+    background-color: #6f2d4e;
+}
+
