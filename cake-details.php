@@ -1,11 +1,31 @@
+
 <?php
 include "config/database.php";
 
-$cake_id = $_GET['id'];
+$cake_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$cake = mysqli_query($conn, "SELECT cakes.*, categories.category_name FROM cakes INNER JOIN categories ON cakes.category_id = categories.category_id WHERE cakes.cake_id = $cake_id AND cakes.availability = 1");
+if (!$cake_id || $cake_id < 1) {
+    http_response_code(404);
+    exit("Cake not found.");
+}
 
-$cake_data = mysqli_fetch_assoc($cake);
+$query = "SELECT cakes.*, categories.category_name
+          FROM cakes
+          INNER JOIN categories
+          ON cakes.category_id = categories.category_id
+          WHERE cakes.cake_id = ? AND cakes.availability = 1";
+
+$stmt = mysqli_prepare($conn, $query);
+mysqli_stmt_bind_param($stmt, "i", $cake_id);
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+$cake_data = mysqli_fetch_assoc($result);
+
+if (!$cake_data) {
+    http_response_code(404);
+    exit("Cake not found.");
+}
 ?>
 
 <!DOCTYPE html>

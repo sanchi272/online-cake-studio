@@ -1,55 +1,54 @@
+
 <?php
 
 include "config/database.php";
 
 $categories = mysqli_query($conn, "SELECT * FROM categories");
 
-$category_id = isset($_GET['category']) ? $_GET['category'] : "";
-$search = isset($_GET['search']) ? $_GET['search'] : "";
+$category_id = isset($_GET['category']) ? (int) $_GET['category'] : 0;
+$search = isset($_GET['search']) ? trim($_GET['search']) : "";
 
-if ($category_id != "" && $search != "") {
+$query = "
+    SELECT cakes.*, categories.category_name
+    FROM cakes
+    INNER JOIN categories
+    ON cakes.category_id = categories.category_id
+    WHERE cakes.availability = 1
+";
 
-    $cakes = mysqli_query($conn, "
-        SELECT cakes.*, categories.category_name
-        FROM cakes
-        INNER JOIN categories
-        ON cakes.category_id = categories.category_id
-        WHERE cakes.availability = 1
-        AND cakes.category_id = $category_id
-        AND cakes.cake_name LIKE '%$search%'
-    ");
+if ($category_id > 0 && $search !== "") {
 
-} elseif ($category_id != "") {
+    $query .= " AND cakes.category_id = ? AND cakes.cake_name LIKE ?";
 
-    $cakes = mysqli_query($conn, "
-        SELECT cakes.*, categories.category_name
-        FROM cakes
-        INNER JOIN categories
-        ON cakes.category_id = categories.category_id
-        WHERE cakes.availability = 1
-        AND cakes.category_id = $category_id
-    ");
+    $stmt = mysqli_prepare($conn, $query);
+    $search_term = "%" . $search . "%";
+    mysqli_stmt_bind_param($stmt, "is", $category_id, $search_term);
 
-} elseif ($search != "") {
+} elseif ($category_id > 0) {
 
-    $cakes = mysqli_query($conn, "
-        SELECT cakes.*, categories.category_name
-        FROM cakes
-        INNER JOIN categories
-        ON cakes.category_id = categories.category_id
-        WHERE cakes.availability = 1
-        AND cakes.cake_name LIKE '%$search%'
-    ");
+    $query .= " AND cakes.category_id = ?";
+
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $category_id);
+
+} elseif ($search !== "") {
+
+    $query .= " AND cakes.cake_name LIKE ?";
+
+    $stmt = mysqli_prepare($conn, $query);
+    $search_term = "%" . $search . "%";
+    mysqli_stmt_bind_param($stmt, "s", $search_term);
 
 } else {
 
-    $cakes = mysqli_query($conn, "
-        SELECT cakes.*, categories.category_name
-        FROM cakes
-        INNER JOIN categories
-        ON cakes.category_id = categories.category_id
-        WHERE cakes.availability = 1
-    ");
+    $stmt = mysqli_prepare($conn, $query);
+
+}
+
+if ($stmt && mysqli_stmt_execute($stmt)) {
+    $cakes = mysqli_stmt_get_result($stmt);
+} else {
+    die("Unable to load cakes. Please try again.");
 }
 
 ?>

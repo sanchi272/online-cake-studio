@@ -1,38 +1,53 @@
+
 <?php
 
 session_start();
 
 include "config/database.php";
-if (isset($_GET['action']) && $_GET['action'] == 'add') {
 
-    $cake_id = $_GET['id'];
+$action = $_GET['action'] ?? '';
+$cake_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
+if ($cake_id && $cake_id > 0) {
 
-    if (isset($_SESSION['cart'][$cake_id])) {
-        $_SESSION['cart'][$cake_id]++;
-    } else {
-        $_SESSION['cart'][$cake_id] = 1;
-    }
-}
-if (isset($_GET['action']) && $_GET['action'] == 'remove') {
+    if ($action === 'add') {
 
-    $cake_id = $_GET['id'];
+        $check_query = "SELECT cake_id FROM cakes
+                        WHERE cake_id = ? AND availability = 1";
+        $check_stmt = mysqli_prepare($conn, $check_query);
+        mysqli_stmt_bind_param($check_stmt, "i", $cake_id);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
 
-    unset($_SESSION['cart'][$cake_id]);
-}
-if (isset($_GET['action']) && $_GET['action'] == 'decrease') {
+        if (mysqli_num_rows($check_result) === 1) {
 
-    $cake_id = $_GET['id'];
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
 
-    if ($_SESSION['cart'][$cake_id] > 1) {
-        $_SESSION['cart'][$cake_id]--;
-    } else {
+            if (isset($_SESSION['cart'][$cake_id])) {
+                $_SESSION['cart'][$cake_id]++;
+            } else {
+                $_SESSION['cart'][$cake_id] = 1;
+            }
+        }
+
+    } elseif ($action === 'remove') {
+
         unset($_SESSION['cart'][$cake_id]);
+
+    } elseif ($action === 'decrease') {
+
+        if (isset($_SESSION['cart'][$cake_id])) {
+            if ($_SESSION['cart'][$cake_id] > 1) {
+                $_SESSION['cart'][$cake_id]--;
+            } else {
+                unset($_SESSION['cart'][$cake_id]);
+            }
+        }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,11 +86,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'decrease') {
                
                 foreach ($_SESSION['cart'] as $cake_id => $quantity) {
 
-                    $query = "SELECT * FROM cakes WHERE cake_id = $cake_id";
+                   $query = "SELECT * FROM cakes WHERE cake_id = ? AND availability = 1";
 
-                    $result = mysqli_query($conn, $query);
+$stmt = mysqli_prepare($conn, $query);
+mysqli_stmt_bind_param($stmt, "i", $cake_id);
+mysqli_stmt_execute($stmt);
 
-                    $cake = mysqli_fetch_assoc($result);
+$result = mysqli_stmt_get_result($stmt);
+$cake = mysqli_fetch_assoc($result);
+
+if (!$cake) {
+    continue;
+}
             ?>
 
                     <div class="cake-card">

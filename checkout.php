@@ -16,13 +16,29 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 
 $total = 0;
 
+$query = "SELECT price FROM cakes
+          WHERE cake_id = ? AND availability = 1";
+
+$stmt = mysqli_prepare($conn, $query);
+
 foreach ($_SESSION['cart'] as $cake_id => $quantity) {
 
-    $query = "SELECT * FROM cakes WHERE cake_id = $cake_id";
-    $result = mysqli_query($conn, $query);
+    $cake_id = (int) $cake_id;
+    $quantity = (int) $quantity;
+
+    if ($cake_id < 1 || $quantity < 1) {
+        continue;
+    }
+
+    mysqli_stmt_bind_param($stmt, "i", $cake_id);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
     $cake = mysqli_fetch_assoc($result);
 
-    $total += $cake['price'] * $quantity;
+    if ($cake) {
+        $total += $cake['price'] * $quantity;
+    }
 }
 if (isset($_POST['place_order'])) {
 
