@@ -213,3 +213,15 @@ main section:nth-child(2) div {
     background-color: #6f2d4e;
 }
 
+.cake-card input,
+.cake-card textarea,
+.cake-card select {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.cake-card textarea {
+    width: 100%;
+    resize: vertical;
+}
+

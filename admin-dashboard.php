@@ -63,6 +63,17 @@ if (!isset($_SESSION['admin_id'])) {
 
 </div>
 
+<div class="cake-card">
+
+<h3>Manage Categories</h3>
+
+<p>Add, edit and delete cake categories.</p>
+
+<a href="admin-categories.php">Manage Categories</a>
+
+</div>
+
+
 
 <div class="cake-card">
 
